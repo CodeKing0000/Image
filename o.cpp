@@ -5,6 +5,17 @@
 #include "head.hpp"
 
     Image::Image(int rows, int cols, int channels, unsigned char* data, int ref_count) {};
+    Image::~Image() {
+    
+        if (ref_count_ > 0) {
+            ref_count_--;
+        }
+    
+        if (ref_count_ == 0 && data_ != nullptr) {
+            delete[] data_;
+            data_ = nullptr;
+        }
+    }
 
     bool Image::operator<(const Image& other) const {
         if (rows_ != other.rows_) {
@@ -152,16 +163,16 @@
     unsigned char* Image::data() {
         return data_;
     };
-    int Image::rows() {
+    int Image::rows() const {
         return rows_;
     };
-    int Image::cols() {
+    int Image::cols() const {
         return cols_;
     };
-    int Image::total() {
+    int Image::total() const {
         return rows_, cols_, channels_, data_, ref_count_;
     };
-    int Image::channels() {
+    int Image::channels() const {
         return channels_;
     };
 
@@ -183,7 +194,7 @@
 
 //создает новое изображение, которое инициализируется нулями.
     Image Image::zeros(int rows, int cols, int channels) {
-        Image a(rows_, cols_, channels_, 0, 0);
+        Image a(rows, cols, channels, 0, 0);
         return a;
     };
 
@@ -232,6 +243,6 @@
 
     //Возвращает текущее количество ссылок на изображение.
     //Т.е. количество объектов, которые ссылаются на данное изображение. Этот метод нужен для unit test'ов.
-    size_t Image::countRef(Image obj) {
-        return obj.ref_count_;
+    size_t Image::countRef() {
+        return ref_count_;
     };
