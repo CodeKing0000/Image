@@ -28,6 +28,9 @@ public:
     //конструктор копий. Данный конструктор не выделяет новую память, а применяет технику reference counting. Сложность создания копии объекта O(1).
     Image(const Image& image) {};
 
+    // деструктор
+    ~Image();
+
     //оператор присваивания. В некотором роде похож на конструктор. Т.е. не выделяет новую память, а применяет технику reference counting. Сложность данной операции O(1).
     Image& operator=(const Image& image) {};
 
@@ -52,17 +55,17 @@ public:
 
     const unsigned char* data() const {};
     unsigned char* data() {};
-    int rows() {};
-    int cols() {};
-    int total() {};
-    int channels() {};
+    int rows() const {};
+    int cols() const {};
+    int total() const {};
+    int channels() const {};
 
     //Вернуть ЧАСТЬ пикселя
     unsigned char& at(int index) {};
     const unsigned char& at(int index) const {};
 
 //создает новое изображение, которое инициализируется нулями.
-    Image zeros(int rows, int cols, int channels) {};
+    static Image zeros(int rows, int cols, int channels) {};
 
 //создает новое изображение, которое инициализируется значением value.
     Image values(int rows, int cols, int channels, unsigned char* value) {};
@@ -75,6 +78,6 @@ public:
 
     //Возвращает текущее количество ссылок на изображение.
     //Т.е. количество объектов, которые ссылаются на данное изображение. Этот метод нужен для unit test'ов.
-    size_t countRef(Image obj) {};
+    size_t countRef() {};
 
 };
